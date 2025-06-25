@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>803 BA Discovery - Prompts for Drew, Chad & Co.</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+        sans-serif;
+      background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+      min-height: 100vh;
+      color: #333;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .header {
+      text-align: center;
+      padding: 60px 20px;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 20px;
+      margin-bottom: 40px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    }
+
+    .tagline {
+      font-size: 1.1em;
+      color: #555;
+      margin-bottom: 5px;
+    }
+
+    .header h1 {
+      font-size: 3em;
+      background: linear-gradient(135deg, #721c24 0%, #2c3e50 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 20px;
+      font-weight: 700;
+    }
+
+    .header p {
+      font-size: 1.3em;
+      color: #666;
+      margin-bottom: 10px;
+    }
+
+    .subtitle {
+      font-size: 1.1em;
+      color: #888;
+      font-style: italic;
+    }
+
+    .search-metrics {
+      margin-top: 30px;
+      padding: 20px;
+      background: #f8f9fa;
+      border-radius: 10px;
+      border-left: 4px solid #721c24;
+    }
+
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      font-size: 0.9em;
+    }
+
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+      margin-bottom: 50px;
+    }
+
+    .tool-card {
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 15px;
+      padding: 30px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .tool-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+    }
+
+    .tool-card h3 {
+      color: #4a5568;
+      margin-bottom: 15px;
+      font-size: 1.4em;
+    }
+
+    .tool-card p {
+      color: #666;
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+
+    .copy-btn {
+      background: linear-gradient(135deg, #721c24 0%, #2c3e50 100%);
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1em;
+      font-weight: 600;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      width: 100%;
+    }
+
+    .copy-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(114, 28, 36, 0.3);
+    }
+
+    .copy-btn:active {
+      transform: translateY(0);
+    }
+
+    .copy-btn.copied {
+      background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+    }
+
+    .prompt-display {
+      background: #2d3748;
+      color: #e2e8f0;
+      padding: 25px;
+      border-radius: 10px;
+      font-family: 'Monaco', 'Consolas', monospace;
+      font-size: 0.9em;
+      line-height: 1.5;
+      margin: 20px 0;
+      white-space: pre-wrap;
+      overflow-x: auto;
+      display: none;
+    }
+
+    .show-prompt {
+      background: none;
+      border: 2px solid #721c24;
+      color: #721c24;
+      padding: 8px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.9em;
+      margin-bottom: 15px;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    .show-prompt:hover {
+      background: #721c24;
+      color: white;
+    }
+
+    .instructions {
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 15px;
+      padding: 40px;
+      margin-bottom: 40px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    }
+
+    .instructions h2 {
+      color: #4a5568;
+      margin-bottom: 25px;
+      font-size: 1.8em;
+    }
+
+    .step {
+      display: flex;
+      align-items: flex-start;
+      margin-bottom: 25px;
+      padding: 20px;
+      background: #f8f9fa;
+      border-radius: 10px;
+      border-left: 4px solid #721c24;
+    }
+
+    .step-number {
+      background: #721c24;
+      color: white;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      margin-right: 15px;
+      flex-shrink: 0;
+    }
+
+    .step-content h4 {
+      color: #4a5568;
+      margin-bottom: 8px;
+    }
+
+    .step-content p {
+      color: #666;
+      line-height: 1.6;
+    }
+
+    .ai-platforms {
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 15px;
+      padding: 30px;
+      margin-bottom: 40px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    }
+
+    .ai-platforms h3 {
+      color: #4a5568;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .platforms-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+    }
+
+    .platform {
+      text-align: center;
+      padding: 20px;
+      border: 2px solid #e2e8f0;
+      border-radius: 10px;
+      transition: transform 0.3s ease, border-color 0.3s ease,
+        box-shadow 0.3s ease;
+      cursor: pointer;
+    }
+
+    .platform:hover {
+      border-color: #721c24;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(114, 28, 36, 0.15);
+    }
+
+    .platform h4 {
+      color: #4a5568;
+      margin-bottom: 8px;
+    }
+
+    .platform p {
+      color: #666;
+      font-size: 0.9em;
+    }
+
+    .platform a {
+      color: #721c24;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .footer {
+      text-align: center;
+      padding: 40px;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 15px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    }
+
+    .footer p {
+      color: #666;
+      font-size: 0.9em;
+    }
+
+    .form-section {
+      background: #f8f9fa;
+      border-radius: 8px;
+      padding: 20px;
+      margin: 20px 0;
+      border-left: 4px solid #721c24;
+    }
+
+    .form-section h4 {
+      color: #721c24;
+      margin-bottom: 15px;
+      font-size: 1.1em;
+    }
+
+    .form-section code {
+      background: #e9ecef;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-family: 'Monaco', 'Consolas', monospace;
+      font-size: 0.85em;
+      color: #721c24;
+    }
+
+    .footer-note {
+      margin-top: 10px;
+      font-size: 0.8em;
+      color: #999;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        padding: 15px;
+      }
+
+      .tab-button {
+        padding: 16px 16px;
+        font-size: 15px;
+      }
+
+      .header h1 {
+        font-size: 2.2em;
+      }
+
+      .instructions h2 {
+        font-size: 22px;
+      }
+
+      .prompt-display {
+        padding: 16px;
+        font-size: 13px;
+      }
+
+      .tools-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>803 BA Discovery</h1>
+      <p class="tagline">Prompts for Drew, Chad &amp; Co.</p>
+      <p class="subtitle">"Tools don't create value; how we use them does"</p>
+
+      <div class="search-metrics">
+        <h3 style="color: #721c24; margin-bottom: 15px; font-size: 1.2em;">
+          Search Metrics
+        </h3>
+        <div class="metrics-grid">
+          <div><strong>Location:</strong> Columbia Metro Area</div>
+          <div><strong>Revenue:</strong> $10M+ Annual</div>
+          <div><strong>Founded:</strong> 2019-2025</div>
+          <div><strong>Sector:</strong> Blue-collar/Industrial</div>
+          <div><strong>Max Results:</strong> 20 Companies</div>
+          <div><strong>Sources:</strong> Public Business Records</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="instructions">
+      <h2>How to Use This Tool</h2>
+      <div class="step">
+        <div class="step-number">1</div>
+        <div class="step-content">
+          <h4>Choose Your AI Model</h4>
+          <p>
+            Pick one of the AI models below. ChatGPT and Claude are the most
+            user-friendly options.
+          </p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-number">2</div>
+        <div class="step-content">
+          <h4>Copy the Prompt</h4>
+          <p>
+            Click the "Copy Prompt" button on any tool below. The prompt is
+            automatically copied to your clipboard.
+          </p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-number">3</div>
+        <div class="step-content">
+          <h4>Paste and Run</h4>
+          <p>
+            Go to your chosen AI platform, paste the prompt, and hit enter. The
+            AI will search for businesses matching your criteria.
+          </p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-number">4</div>
+        <div class="step-content">
+          <h4>Get Your Results</h4>
+          <p>
+            Within minutes, you'll receive a detailed list of companies with
+            contact information, revenue data, and business details.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="tools-grid">
+      <div class="tool-card">
+        <h3>🎯 High-Growth Company Finder</h3>
+        <p>
+          Find companies in Columbia, SC founded 2019-2025 with $10M+ revenue.
+          Perfect for partnership opportunities, sales prospects, or market
+          research.
+        </p>
+        <button class="show-prompt" onclick="togglePrompt('basic')">
+          Show Prompt
+        </button>
+        <div id="basic-prompt" class="prompt-display">
+          I need you to find high-growth companies in the Columbia, South
+          Carolina metropolitan area. Please search for:
+
+          TARGET COMPANIES:
+          • Located in: Richland, Lexington, Kershaw, Fairfield, or Calhoun
+          Counties, SC
+          • Founded: 2019-2025 (newer companies only)
+          • Annual Revenue: $10 million or higher
+          • Status: Currently active and operational
+          • Focus: Manufacturing, construction, industrial, or blue-collar
+          businesses
+
+          INFORMATION TO FIND:
+          1. Company name
+          2. Type of business (LLC, Corporation, etc.)
+          3. Year founded
+          4. Full address
+          5. Phone number and email
+          6. What they do (main business activities)
+          7. Latest revenue figure (with year)
+          8. Where you found this information
+
+          REQUIREMENTS:
+          • Find up to 20 companies
+          • Use reliable sources like state business registries, economic
+          development websites, and business databases
+          • Only include companies with verified $10M+ revenue
+          • Double-check information when possible
+
+          Please format the results in a clear table so I can easily review the
+          companies and their details.
+        </div>
+        <button class="copy-btn" onclick="copyPrompt('basic')">
+          Copy Prompt
+        </button>
+      </div>
+
+      <div class="tool-card">
+        <h3>🔍 Custom Business Search</h3>
+        <p>
+          Modify the search criteria for different industries, revenue ranges, or
+          geographic areas. Flexible tool for specific research needs.
+        </p>
+
+        <div class="form-section">
+          <h4>Instructions:</h4>
+          <p style="margin-bottom: 15px; color: #666; line-height: 1.6;">
+            After copying the prompt below, look for text in
+            <strong>{curly brackets}</strong> and replace them with your specific
+            requirements. For example:
+          </p>
+          <ul style="margin: 0; padding-left: 20px; color: #666; font-size: 0.9em;">
+            <li>
+              Replace <code>{AREA}</code> with "Atlanta metro area" or "Greenville
+              County, SC"
+            </li>
+            <li>
+              Replace <code>{INDUSTRY}</code> with "technology companies" or
+              "healthcare services"
+            </li>
+            <li>
+              Replace <code>{REVENUE}</code> with "$5M+" or "$1M-50M" or "any
+              size"
+            </li>
+            <li>Replace <code>{YEARS}</code> with "2015-2025" or "last 10 years"</li>
+          </ul>
+        </div>
+
+        <button class="copy-btn" onclick="copyPrompt('custom')" style="margin-bottom: 15px;">
+          Copy Prompt
+        </button>
+        <div id="custom-prompt" class="prompt-display" style="display: block;">
+          I need you to search for businesses with specific criteria. Please find
+          companies that match these requirements:
+
+          GEOGRAPHIC AREA: {AREA}
+
+          COMPANY CRITERIA:
+          • Founded: {YEARS}
+          • Industry: {INDUSTRY}
+          • Revenue: {REVENUE}
+          • Company type: Any type
+
+          INFORMATION TO COLLECT:
+          1. Company name and legal structure
+          2. Year established
+          3. Business address
+          4. Primary contact information (phone/email)
+          5. Core business activities and services
+          6. Revenue information (if available)
+          7. Number of employees (if available)
+          8. Data sources used
+
+          SEARCH INSTRUCTIONS:
+          • Find up to 20 companies
+          • Use authoritative business databases and registries
+          • Verify information across multiple sources when possible
+          • Format results in an organized table
+          • Note any limitations or data gaps
+        </div>
+      </div>
+
+      <div class="tool-card">
+        <h3>🏢 Company Deep Dive</h3>
+        <p>
+          Get detailed analysis of specific companies including leadership,
+          recent news, financial trends, and competitive positioning.
+        </p>
+
+        <div class="form-section">
+          <h4>Enter Company Details:</h4>
+          <div class="form-row">
+            <label>Company Name:</label>
+            <input
+              type="text"
+              id="deep-company"
+              placeholder="e.g., ABC Manufacturing Inc., XYZ Construction LLC"
+            />
+          </div>
+        </div>
+
+        <button class="show-prompt" onclick="togglePrompt('deep')">
+          Show Prompt
+        </button>
+        <div id="deep-prompt" class="prompt-display">
+          I need a comprehensive analysis of a specific company. Please research:
+          [COMPANY]
+
+          COMPANY OVERVIEW:
+          • Legal name and business structure
+          • Founding date and history
+          • Current headquarters address
+          • Primary business activities and services
+          • Industry classification and market position
+
+          LEADERSHIP &amp; OWNERSHIP:
+          • CEO/President and key executives
+          • Ownership structure (if publicly available)
+          • Board members or advisors (if applicable)
+
+          FINANCIAL INFORMATION:
+          • Latest revenue figures and trends
+          • Employee count and growth
+          • Recent funding or investment (if applicable)
+          • Credit ratings or financial health indicators
+
+          RECENT DEVELOPMENTS:
+          • News articles from past 12 months
+          • Press releases or announcements
+          • Awards or recognition received
+          • New partnerships or contracts
+
+          MARKET ANALYSIS:
+          • Main competitors in their space
+          • Market share or position (if available)
+          • Growth opportunities and challenges
+          • Industry trends affecting the company
+
+          CONTACT &amp; VERIFICATION:
+          • Current contact information
+          • Website and social media presence
+          • Data sources and verification notes
+
+          Please provide this information in a well-organized report format with
+          clear sections and source citations.
+        </div>
+        <button class="copy-btn" onclick="copyDeepPrompt()">
+          Copy Customized Prompt
+        </button>
+      </div>
+
+      <div class="tool-card">
+        <h3>📊 Market Research Assistant</h3>
+        <p>
+          Analyze entire industries or market segments in your area. Get insights
+          on trends, key players, and opportunities.
+        </p>
+
+        <div class="form-section">
+          <h4>Define Your Market Research:</h4>
+          <div class="form-row">
+            <label>Industry:</label>
+            <input
+              type="text"
+              id="market-industry"
+              placeholder="e.g., manufacturing, healthcare services, technology"
+            />
+          </div>
+          <div class="form-row">
+            <label>Geographic Area:</label>
+            <input
+              type="text"
+              id="market-area"
+              placeholder="e.g., Columbia SC metro area, Charleston region"
+            />
+          </div>
+        </div>
+
+        <button class="show-prompt" onclick="togglePrompt('market')">
+          Show Prompt
+        </button>
+        <div id="market-prompt" class="prompt-display">
+          I need a comprehensive market analysis for a specific industry in my
+          area. Please research:
+
+          INDUSTRY: [INDUSTRY]
+          GEOGRAPHIC AREA: [AREA]
+
+          MARKET OVERVIEW:
+          • Industry size and total market value in the region
+          • Number of companies operating in this space
+          • Employment levels and economic impact
+          • Recent growth trends and projections
+
+          KEY PLAYERS ANALYSIS:
+          • Top 10-15 companies by revenue/size
+          • Market leaders and their market share
+          • Emerging companies to watch
+          • Recent mergers, acquisitions, or new entrants
+
+          INDUSTRY TRENDS:
+          • Growth drivers and market opportunities
+          • Challenges and potential threats
+          • Technology disruptions or innovations
+          • Regulatory changes affecting the industry
+
+          COMPETITIVE LANDSCAPE:
+          • How companies differentiate themselves
+          • Pricing strategies and business models
+          • Geographic concentration or distribution
+          • Supply chain and vendor relationships
+
+          OPPORTUNITIES &amp; INSIGHTS:
+          • Underserved market segments
+          • Potential partnership opportunities
+          • Investment or business development prospects
+          • Recommendations for market entry
+
+          Please organize this information into a professional market research
+          report with clear sections, data tables where helpful, and source
+          citations.
+        </div>
+        <button class="copy-btn" onclick="copyMarketPrompt()">
+          Copy Customized Prompt
+        </button>
+      </div>
+    </div>
+
+    <div class="ai-platforms">
+      <h3>Choose Your AI Model</h3>
+      <div class="platforms-grid">
+        <div
+          class="platform"
+          onclick="window.open('https://chat.openai.com', '_blank')"
+        >
+          <h4>ChatGPT</h4>
+          <p>Most popular and user-friendly</p>
+          <a href="https://chat.openai.com" target="_blank">chat.openai.com</a>
+        </div>
+        <div
+          class="platform"
+          onclick="window.open('https://claude.ai', '_blank')"
+        >
+          <h4>Claude</h4>
+          <p>Excellent for research tasks</p>
+          <a href="https://claude.ai" target="_blank">claude.ai</a>
+        </div>
+        <div
+          class="platform"
+          onclick="window.open('https://gemini.google.com', '_blank')"
+        >
+          <h4>Gemini</h4>
+          <p>Google's AI model</p>
+          <a href="https://gemini.google.com" target="_blank">gemini.google.com</a>
+        </div>
+        <div
+          class="platform"
+          onclick="window.open('https://perplexity.ai', '_blank')"
+        >
+          <h4>Perplexity</h4>
+          <p>Great for real-time research</p>
+          <a href="https://perplexity.ai" target="_blank">perplexity.ai</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <p>
+        🎁 <strong>Created especially for you</strong> • This tool uses advanced
+        AI prompting techniques to deliver professional-grade business
+        intelligence
+      </p>
+      <p class="footer-note">
+        All searches use only publicly available business information • Results
+        may vary based on data availability
+      </p>
+    </div>
+  </div>
+
+  <script>
+    function togglePrompt(id) {
+      const prompt = document.getElementById(id + '-prompt');
+      const button = prompt.previousElementSibling;
+
+      if (!prompt.style.display || prompt.style.display === 'none') {
+        prompt.style.display = 'block';
+        button.textContent = 'Hide Prompt';
+      } else {
+        prompt.style.display = 'none';
+        button.textContent = 'Show Prompt';
+      }
+    }
+
+    function copyPrompt(id) {
+      const promptText = document.getElementById(id + '-prompt').textContent;
+      copyToClipboard(promptText, event.target);
+    }
+
+    function copyDeepPrompt() {
+      const company =
+        document.getElementById('deep-company').value || '[SPECIFY COMPANY NAME]';
+
+      const customizedPrompt = `I need a comprehensive analysis of a specific company. Please research: ${company}
+
+COMPANY OVERVIEW:
+• Legal name and business structure
+• Founding date and history
+• Current headquarters address
+• Primary business activities and services
+• Industry classification and market position
+
+LEADERSHIP & OWNERSHIP:
+• CEO/President and key executives
+• Ownership structure (if publicly available)
+• Board members or advisors (if applicable)
+
+FINANCIAL INFORMATION:
+• Latest revenue figures and trends
+• Employee count and growth
+• Recent funding or investment (if applicable)
+• Credit ratings or financial health indicators
+
+RECENT DEVELOPMENTS:
+• News articles from past 12 months
+• Press releases or announcements
+• Awards or recognition received
+• New partnerships or contracts
+
+MARKET ANALYSIS:
+• Main competitors in their space
+• Market share or position (if available)
+• Growth opportunities and challenges
+• Industry trends affecting the company
+
+CONTACT & VERIFICATION:
+• Current contact information
+• Website and social media presence
+• Data sources and verification notes
+
+Please provide this information in a well-organized report format with clear sections and source citations.`;
+
+      copyToClipboard(customizedPrompt, event.target);
+    }
+
+    function copyMarketPrompt() {
+      const industry =
+        document.getElementById('market-industry').value || '[SPECIFY INDUSTRY]';
+      const area =
+        document.getElementById('market-area').value || '[SPECIFY AREA]';
+
+      const customizedPrompt = `I need a comprehensive market analysis for a specific industry in my area. Please research:
+
+INDUSTRY: ${industry}
+GEOGRAPHIC AREA: ${area}
+
+MARKET OVERVIEW:
+• Industry size and total market value in the region
+• Number of companies operating in this space
+• Employment levels and economic impact
+• Recent growth trends and projections
+
+KEY PLAYERS ANALYSIS:
+• Top 10-15 companies by revenue/size
+• Market leaders and their market share
+• Emerging companies to watch
+• Recent mergers, acquisitions, or new entrants
+
+INDUSTRY TRENDS:
+• Growth drivers and market opportunities
+• Challenges and potential threats
+• Technology disruptions or innovations
+• Regulatory changes affecting the industry
+
+COMPETITIVE LANDSCAPE:
+• How companies differentiate themselves
+• Pricing strategies and business models
+• Geographic concentration or distribution
+• Supply chain and vendor relationships
+
+OPPORTUNITIES & INSIGHTS:
+• Underserved market segments
+• Potential partnership opportunities
+• Investment or business development prospects
+• Recommendations for market entry
+
+Please organize this information into a professional market research report with clear sections, data tables where helpful, and source citations.`;
+
+      copyToClipboard(customizedPrompt, event.target);
+    }
+
+    function copyToClipboard(text, button) {
+      navigator.clipboard
+        .writeText(text)
+        .then(() => {
+          const originalText = button.textContent;
+          button.textContent = '✓ Copied!';
+          button.classList.add('copied');
+
+          setTimeout(() => {
+            button.textContent = originalText;
+            button.classList.remove('copied');
+          }, 2000);
+        })
+        .catch(() => {
+          const textArea = document.createElement('textarea');
+          textArea.value = text;
+          document.body.appendChild(textArea);
+          textArea.select();
+          document.execCommand('copy');
+          document.body.removeChild(textArea);
+
+          const originalText = button.textContent;
+          button.textContent = '✓ Copied!';
+          button.classList.add('copied');
+
+          setTimeout(() => {
+            button.textContent = originalText;
+            button.classList.remove('copied');
+          }, 2000);
+        });
+    }
+  </script>
+</body>
+</html>
